@@ -1,0 +1,97 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Go wasm</title>
+
+
+    <link href="css/bulma.min.css" rel="stylesheet">
+</head>
+
+<body>
+<section class="section">
+    <div class="container">
+
+        <h1 class="title">
+            Simple Shamir's Secret Sharing (s4)
+        </h1>
+        <p class="subtitle">
+            Share your secret with a cryptographical secure method. All running locally in your browser. Your secrets never leave your machine!
+        </p>
+
+        <div class="tabs is-boxed" id="tabNav">
+            <ul>
+                <li  :class="{ 'is-active': active=='encrypt'}"><a @click="active = 'encrypt'">Encrypt</a></li>
+                <li :class="{ 'is-active': active=='decrypt'}"><a  @click="active = 'decrypt'">Decrypt</a></li>
+                <li :class="{ 'is-active': active=='info'}"><a  @click="active = 'info'">Info</a></li>
+            </ul>
+        </div>
+
+        <div class="notification is-danger" id="errorNotification" v-if="show">
+            <button class="delete" @click="error=''"></button>
+            {{error}}
+        </div>
+
+        <div class="columns" id="infoContainer"  v-if="show">
+infor
+        </div>
+        <div class="columns" id="decryptForm"  v-if="show">
+            <div class="column is-vertical">
+                <div class="columns is-horizontal">
+                    <div class="column ">
+                        <input class="input"   min="2" type="number"  v-model="shares" placeholder="Shares">
+                    </div>
+                </div>
+                <div class="columns is-horizontal">
+                    <div class="column" v-for="(inField,index) in inFields">
+                        <textarea class="textarea" @input="setInField(index,$event)"  v-model="inFields[index]" placeholder="Your encrypted input share"></textarea>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <textarea class="textarea" v-model="outputString" readonly placeholder="Your decrypted output"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="columns" id="encryptForm" style="display: block;" v-if="show">
+            <div class="column is-vertical">
+                <div class="columns is-horizontal">
+                    <div class="column ">
+                        <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
+                    </div>
+                    <div class="column">
+                        <input class="input" type="number" min="2" :max="shares"  v-model="requiredShareCount" placeholder="Minimum required shares">
+                    </div>
+                    <div class="column">
+                        <label class="checkbox">
+                            <input type="checkbox" class="checkbox" v-model="useAES"> Use AES(256 bit) for data and distribute key</label>
+                    </div>
+                </div>
+                <div class="column">
+                    <textarea class="textarea" v-model="inputString"  placeholder="What every message / binary data you want."></textarea>
+                </div>
+
+                <div class="columns is-horizontal">
+                    <div class="column" v-for="out in outArray">
+                        <textarea class="textarea" readonly>{{out}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script src="js/wasm_exec.js"></script>
+<script src="js/vue_debug.js"></script>
+<script src="js/errorNotification.js"></script>
+<script src="js/tabNav.js"></script>
+<script src="js/loadWASM.js"></script>
+<script src="js/encryptForm.js"></script>
+<script src="js/infoContainer.js"></script>
+<script src="js/decryptForm.js"></script>
+
+</body>
+</html>
