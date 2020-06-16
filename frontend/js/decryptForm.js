@@ -41,6 +41,7 @@ let decryptForm = new Vue({
             set: function (newValue) {
                 this.n = Number(newValue)
                 this.inFields = Array(this.n).fill("")
+                this.outputString = ""
                 this.recover()
             }
 
