@@ -5,3 +5,7 @@ github.com/pkg/errors
 ## explicit
 github.com/posener/sharedsecret
 github.com/posener/sharedsecret/internal/polynom
+# github.com/shurcooL/go v0.0.0-20200502201357-93f07166e636
+## explicit
+# github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041
+## explicit
