@@ -74,11 +74,11 @@
         <div class="columns" id="encryptForm" style="display: block;" v-if="show">
             <div class="column is-vertical">
                 <div class="columns is-horizontal is-vcentered">
-                    <div class="column ">
-                        Shares: <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
-                    </div>
                     <div class="column">
                         Minimum required shares: <input class="input" type="number" min="2" :max="shares"  v-model="requiredShareCount" placeholder="Minimum required shares">
+                    </div>
+                    <div class="column ">
+                        Shares: <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
                     </div>
                     <div class="column ">
                         <label class="checkbox">
