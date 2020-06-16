@@ -1,10 +1,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Go wasm</title>
+    <title> Simple Shamir's Secret Sharing (s4) - Run shamir's secret sharing locally in your browser</title>
 
 
     <link href="css/bulma.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,7 +39,7 @@ infor
             <div class="column is-vertical">
                 <div class="columns is-horizontal">
                     <div class="column ">
-                        <input class="input"   min="2" type="number"  v-model="shares" placeholder="Shares">
+                        Shares: <input class="input"   min="2" type="number"  v-model="shares" placeholder="Shares">
                     </div>
                 </div>
                 <div class="columns is-horizontal">
@@ -47,8 +48,10 @@ infor
                     </div>
                 </div>
 
-                <div class="column">
-                    <textarea class="textarea" v-model="outputString" readonly placeholder="Your decrypted output"></textarea>
+                <div class="columns">
+                    <div class="column">
+                        <textarea class="textarea" v-model="outputString" readonly placeholder="Your decrypted output"></textarea>
+                    </div>
                 </div>
 
             </div>
@@ -56,20 +59,22 @@ infor
 
         <div class="columns" id="encryptForm" style="display: block;" v-if="show">
             <div class="column is-vertical">
-                <div class="columns is-horizontal">
+                <div class="columns is-horizontal is-vcentered">
                     <div class="column ">
-                        <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
+                        Shares: <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
                     </div>
                     <div class="column">
-                        <input class="input" type="number" min="2" :max="shares"  v-model="requiredShareCount" placeholder="Minimum required shares">
+                        Minimum required shares: <input class="input" type="number" min="2" :max="shares"  v-model="requiredShareCount" placeholder="Minimum required shares">
                     </div>
-                    <div class="column">
+                    <div class="column ">
                         <label class="checkbox">
                             <input type="checkbox" class="checkbox" v-model="useAES"> Use AES(256 bit) for data and distribute key</label>
                     </div>
                 </div>
-                <div class="column">
-                    <textarea class="textarea" v-model="inputString"  placeholder="What every message / binary data you want."></textarea>
+                <div class="columns">
+                    <div class="column">
+                        <textarea class="textarea" v-model="inputString"  placeholder="What every message / binary data you want."></textarea>
+                    </div>
                 </div>
 
                 <div class="columns is-horizontal">
