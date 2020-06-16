@@ -62,7 +62,12 @@ let decryptForm = new Vue({
         recover:function () {
             console.log("recover")
 
-            if (this.inFields.reduce((i,t)=>{ return t*i.trim().length}) <= 0){
+            if (this.inFields.reduce((i,t)=>{
+                if (i.length > 0){
+                    return t*i.trim().length
+                }
+                return 0
+            }) <= 0){
                 console.log("no share is filled out")
                 return
             }
