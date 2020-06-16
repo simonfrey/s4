@@ -97,6 +97,9 @@ let encryptForm = new Vue({
                 this.outArray = Array(this.shares).fill("")
                 return
             }
+            if (this.shares <= 0 || this.requiredShareCount<=0||this.requiredShareCount>this.shares){
+                return
+            }
 
             res = Distribute_fours((String(btoa(this.inputString))),Number(this.shares),Number(this.requiredShareCount),Boolean(this.useAES))
             if (typeof res === 'string'){
