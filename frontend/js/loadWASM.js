@@ -12,7 +12,7 @@ const go = new Go();
 let mod, inst;
 
 
-WebAssembly.instantiateStreaming(fetch("wasm/main.wasm"), go.importObject).then(
+WebAssembly.instantiateStreaming(fetch("wasm/wasm.wasm"), go.importObject).then(
     async  result => {
         console.log("Loaded")
         mod = result.module;
