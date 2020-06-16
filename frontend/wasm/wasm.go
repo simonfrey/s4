@@ -39,6 +39,9 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 	inStrings := make([]string, i[0].Length())
 	for k := 0; k < i[0].Length(); k++ {
 		inStrings[k] = i[0].Index(k).String()
+		if len(inStrings[k]) == 0 {
+			return js.ValueOf("")
+		}
 	}
 
 	inBytes := make([][]byte, len(inStrings))
