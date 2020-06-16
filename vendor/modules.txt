@@ -1,0 +1,7 @@
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/posener/sharedsecret v0.0.0-20200414095807-b90bfadc28af
+## explicit
+github.com/posener/sharedsecret
+github.com/posener/sharedsecret/internal/polynom
