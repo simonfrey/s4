@@ -13,9 +13,9 @@ bytes to byte shares and vice versa
 
 I assume you have a [go](https://golang.org/) build environment setup in your machine. 
 
-In order to build the web assembly file for the frontend please use the following command in the `frontend/wasm` directory:
+In order to build & pack the web assembly file for the frontend please use the following command in the top level directory:
 ```
-GOOS=js GOARCH=wasm go build -o wasm.wasm wasm.go
+bash buildFrontend.sh
 ```
 
 This will build you the required file. You now can copy to `frontend` folder to your web server (or use it locally) and it

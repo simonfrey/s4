@@ -11,8 +11,8 @@ if (!WebAssembly.instantiateStreaming) {
 const go = new Go();
 let mod, inst;
 
-
-WebAssembly.instantiateStreaming(fetch("wasm/wasm.wasm"), go.importObject).then(
+var wasmResponse =
+WebAssembly.instantiateStreaming(fetch(wasmPayloadInlineURL), go.importObject).then(
     async  result => {
         console.log("Loaded")
         mod = result.module;
