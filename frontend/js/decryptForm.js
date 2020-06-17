@@ -62,16 +62,6 @@ let decryptForm = new Vue({
         recover:function () {
             console.log("recover")
 
-            if (this.inFields.reduce((i,t)=>{
-                if (i.length > 0){
-                    return t*i.trim().length
-                }
-                return 0
-            }) <= 0){
-                console.log("no share is filled out")
-                return
-            }
-
            res = Recover_fours(this.inFields)
 
             if (!base64regex.test(res)){

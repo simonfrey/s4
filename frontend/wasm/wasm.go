@@ -8,6 +8,7 @@ import (
 	"s4"
 	"s4/crypto"
 	"strconv"
+	"strings"
 	"syscall/js"
 )
 
@@ -38,7 +39,10 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 
 	inStrings := make([]string, i[0].Length())
 	for k := 0; k < i[0].Length(); k++ {
-		inStrings[k] = i[0].Index(k).String()
+		inStrings[k] = strings.TrimSpace(i[0].Index(k).String())
+		if len(inStrings[k]) == 0 {
+			return js.Error{js.ValueOf(fmt.Sprintf("Please provide all shares. Share '%d' is empty", k))}
+		}
 	}
 
 	inBytes := make([][]byte, len(inStrings))
