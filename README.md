@@ -27,5 +27,11 @@ Please use [Github Issues](https://github.com/simonfrey/s4/issues) in order to r
 
 💸 If you want to tip me for my work on this project [feel free to do so](https://simon-frey.com/tip) 💸
 
+frey.com/tip)
+
+## 🗣 Discussions
+
+s4 was broadly discussed on [HackerNews](https://news.ycombinator.com/item?id=23541949) and was mentioned in [golang weekly](https://golangweekly.com/issues/317)
+
 ## 📃 License
 MIT License
