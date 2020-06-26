@@ -24,7 +24,7 @@
                 <li  :class="{ 'is-active': active=='encrypt'}"><a @click="active = 'encrypt'">Encrypt</a></li>
                 <li :class="{ 'is-active': active=='decrypt'}"><a  @click="active = 'decrypt'">Decrypt</a></li>
                 <li :class="{ 'is-active': active=='info'}"><a  @click="active = 'info'">Info</a></li>
-            </ul>
+            </ul>6
         </div>
 
         <div class="notification is-danger" id="errorNotification" v-if="show">
@@ -105,6 +105,7 @@
 
 <script src="js/wasmPayload.js"></script>
 <script src="js/wasm_exec.js"></script>
+<script src="js/patch_base64.js"></script>
 <script src="js/vue_debug.js"></script>
 <script src="js/errorNotification.js"></script>
 <script src="js/tabNav.js"></script>
