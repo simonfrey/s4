@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title> Simple Shamir's Secret Sharing (s4) - Run shamir's secret sharing locally in your browser</title>
@@ -9,110 +10,136 @@
 </head>
 
 <body>
-<section class="section">
-    <div class="container">
+    <section class="section">
+        <div class="container">
 
-        <h1 class="title">
-            Simple Shamir's Secret Sharing (s4)
-        </h1>
-        <p class="subtitle">
-            Share your secret with a cryptographically secure method. All running locally in your browser. Your secrets never leave your machine!
-        </p>
+            <h1 class="title">
+                Simple Shamir's Secret Sharing (s4)
+            </h1>
+            <p class="subtitle">
+                Share your secret with a cryptographically secure method. All running locally in your browser. Your
+                secrets never leave your machine!
+            </p>
 
-        <div class="tabs is-boxed" id="tabNav">
-            <ul>
-                <li  :class="{ 'is-active': active=='encrypt'}"><a @click="active = 'encrypt'">Encrypt</a></li>
-                <li :class="{ 'is-active': active=='decrypt'}"><a  @click="active = 'decrypt'">Decrypt</a></li>
-                <li :class="{ 'is-active': active=='info'}"><a  @click="active = 'info'">Info</a></li>
-            </ul>
-        </div>
-
-        <div class="notification is-danger" id="errorNotification" v-if="show">
-            <button class="delete" @click="error=''"></button>
-            {{error}}
-        </div>
-
-        <div class="columns is-horizontal" id="infoContainer"  v-if="show">
-            <div class="column">
-                <h3 class="subtitle">Videos</h3>
-                <p>The following youtube videos explain you more about <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing" target="_blank">Shamir's Secret Sharing</a></p>
+            <p id="onOffline" class="has-text-danger">Your browser is online. Please disconnect from your network to use
+                s4 in a safer way</p>
+            <p id="onFile" class="has-text-danger">You are running s4 from a webserver, this is insecure. Please save
+                the webpage (Ctrl+S) locally and open this file.</p>
+            <div class="tabs is-boxed" id="tabNav">
                 <ul>
-                    <li><a href="https://www.youtube-nocookie.com/embed/TQ-DsEZBuQY" target="_blank">What is Key Sharding? Shamir’s Secret Sharing Explained</a> (<b>Easy</b>)</li>
-                    <li><a href="https://www.youtube-nocookie.com/embed/rWPZoz0aux4" target="_blank">Shamir's Secret Sharing - Solution and alternative to Lagrange</a> (<b>More in-depth</b>)</li>
+                    <li :class="{ 'is-active': active=='encrypt'}"><a @click="active = 'encrypt'">Encrypt</a></li>
+                    <li :class="{ 'is-active': active=='decrypt'}"><a @click="active = 'decrypt'">Decrypt</a></li>
+                    <li :class="{ 'is-active': active=='info'}"><a @click="active = 'info'">Info</a></li>
                 </ul>
             </div>
-            <div class="column ">
-                <h3 class="subtitle">About s4</h3>
-                <p>With <b>S</b>imple <b>S</b>hamir's <b>S</b>ecret <b>S</b>haring (s4) I want to provide you an easy to use interface for this beautiful little piece of math.</p>
-                <p>s4 is open source and provided as it is. You can find the code on <a href="https://github.com/simonfrey/s4/issues" target="_blank">Github</a> and this website works completely offline. Save it to your computer (Ctrl+S) in order to not lose access to the s4 in case this website will be down at any point in the future.</p>
-               <p> Please note that s4 is provided as it is and I do not take responsibility for any bugs. s4 is a tiny layer around <a href="https://github.com/posener/sharedsecret" target="_blank">sharedsecret</a> and golangs <a href="https://github.com/gtank/cryptopasta/blob/master/encrypt.go" target="_blank">AES encryption</a>.</p>
-                <p>If you find any issues, please report them via <a href="https://github.com/simonfrey/s4/issues" target="_blank">Github issues</a> and if you want to tip me for the work on this project,<a href="https://simon-frey.com/tip" target="_blank"> feel free to do so !</a></p>
+
+            <div class="notification is-danger" id="errorNotification" v-if="show">
+                <button class="delete" @click="error=''"></button>
+                {{error}}
             </div>
-        </div>
-        <div class="columns" id="decryptForm"  v-if="show">
-            <div class="column is-vertical">
-                <div class="columns is-horizontal">
-                    <div class="column ">
-                        Shares: <input class="input"   min="2" type="number"  v-model="shares" placeholder="Shares">
-                    </div>
-                </div>
-                <div class="columns is-horizontal">
-                    <div class="column" v-for="(inField,index) in inFields">
-                        <textarea class="textarea" @input="setInField(index,$event)"  v-model="inFields[index]" placeholder="Your encrypted input share"></textarea>
-                    </div>
-                </div>
 
-                <div class="columns">
-                    <div class="column">
-                        <textarea class="textarea" v-model="outputString" readonly placeholder="Your decrypted output"></textarea>
-                    </div>
+            <div class="columns is-horizontal" id="infoContainer" v-if="show">
+                <div class="column">
+                    <h3 class="subtitle">Videos</h3>
+                    <p>The following youtube videos explain you more about <a
+                            href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing" target="_blank">Shamir's
+                            Secret Sharing</a></p>
+                    <ul>
+                        <li><a href="https://www.youtube-nocookie.com/embed/TQ-DsEZBuQY" target="_blank">What is Key
+                                Sharding? Shamir’s Secret Sharing Explained</a> (<b>Easy</b>)</li>
+                        <li><a href="https://www.youtube-nocookie.com/embed/rWPZoz0aux4" target="_blank">Shamir's Secret
+                                Sharing - Solution and alternative to Lagrange</a> (<b>More in-depth</b>)</li>
+                    </ul>
                 </div>
-
-            </div>
-        </div>
-
-        <div class="columns" id="encryptForm" style="display: block;" v-if="show">
-            <div class="column is-vertical">
-                <div class="columns is-horizontal is-vcentered">
-                    <div class="column">
-                        Minimum required shares: <input class="input" type="number" min="2" :max="shares"  v-model="requiredShareCount" placeholder="Minimum required shares">
-                    </div>
-                    <div class="column ">
-                        Shares: <input class="input" min="2"   type="number"  v-model="shares" placeholder="Shares">
-                    </div>
-                    <div class="column ">
-                        <label class="checkbox">
-                            <input type="checkbox" class="checkbox" v-model="useAES"> Use AES(256 bit) for data and distribute key</label>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column">
-                        <textarea class="textarea" v-model="inputString"  placeholder="Whatever message / binary data you want."></textarea>
-                    </div>
-                </div>
-
-                <div class="columns is-horizontal">
-                    <div class="column" v-for="out in outArray">
-                        <textarea class="textarea" readonly>{{out}}</textarea>
-                    </div>
+                <div class="column ">
+                    <h3 class="subtitle">About s4</h3>
+                    <p>With <b>S</b>imple <b>S</b>hamir's <b>S</b>ecret <b>S</b>haring (s4) I want to provide you an
+                        easy to use interface for this beautiful little piece of math.</p>
+                    <p>s4 is open source and provided as it is. You can find the code on <a
+                            href="https://github.com/simonfrey/s4/issues" target="_blank">Github</a> and this website
+                        works completely offline. Save it to your computer (Ctrl+S) in order to not lose access to the
+                        s4 in case this website will be down at any point in the future.</p>
+                    <p> Please note that s4 is provided as it is and I do not take responsibility for any bugs. s4 is a
+                        tiny layer around <a href="https://github.com/posener/sharedsecret"
+                            target="_blank">sharedsecret</a> and golangs <a
+                            href="https://github.com/gtank/cryptopasta/blob/master/encrypt.go" target="_blank">AES
+                            encryption</a>.</p>
+                    <p>If you find any issues, please report them via <a href="https://github.com/simonfrey/s4/issues"
+                            target="_blank">Github issues</a> and if you want to tip me for the work on this project,<a
+                            href="https://simon-frey.com/tip" target="_blank"> feel free to do so !</a></p>
                 </div>
             </div>
+            <div class="columns" id="decryptForm" v-if="show">
+                <div class="column is-vertical">
+                    <div class="columns is-horizontal">
+                        <div class="column ">
+                            Shares: <input class="input" min="2" type="number" v-model="shares" placeholder="Shares">
+                        </div>
+                    </div>
+                    <div class="columns is-horizontal">
+                        <div class="column" v-for="(inField,index) in inFields">
+                            <textarea class="textarea" @input="setInField(index,$event)" v-model="inFields[index]"
+                                placeholder="Your encrypted input share"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="columns">
+                        <div class="column">
+                            <textarea class="textarea" v-model="outputString" readonly
+                                placeholder="Your decrypted output"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="columns" id="encryptForm" style="display: block;" v-if="show">
+                <div class="column is-vertical">
+                    <div class="columns is-horizontal is-vcentered">
+                        <div class="column">
+                            Minimum required shares: <input class="input" type="number" min="2" :max="shares"
+                                v-model="requiredShareCount" placeholder="Minimum required shares">
+                        </div>
+                        <div class="column ">
+                            Shares: <input class="input" min="2" type="number" v-model="shares" placeholder="Shares">
+                        </div>
+                        <div class="column ">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox" v-model="useAES"> Use AES(256 bit) for data and
+                                distribute key</label>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <textarea class="textarea" v-model="inputString"
+                                placeholder="Whatever message / binary data you want."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="columns is-horizontal">
+                        <div class="column" v-for="out in outArray">
+                            <textarea class="textarea" readonly>{{out}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+    </section>
 
-
-    </div>
-</section>
-
-<script src="js/wasmPayload.js"></script>
-<script src="js/wasm_exec.js"></script>
-<script src="js/patch_base64.js"></script>
-<script src="js/vue_debug.js"></script>
-<script src="js/errorNotification.js"></script>
-<script src="js/tabNav.js"></script>
-<script src="js/loadWASM.js"></script>
-<script src="js/encryptForm.js"></script>
-<script src="js/infoContainer.js"></script>
-<script src="js/decryptForm.js"></script>
+    <script src="js/wasmPayload.js"></script>
+    <script src="js/wasm_exec.js"></script>
+    <script src="js/checkOnline.js"></script>
+    <script src="js/patch_base64.js"></script>
+    <script src="js/vue_debug.js"></script>
+    <script src="js/errorNotification.js"></script>
+    <script src="js/tabNav.js"></script>
+    <script src="js/loadWASM.js"></script>
+    <script src="js/encryptForm.js"></script>
+    <script src="js/infoContainer.js"></script>
+    <script src="js/decryptForm.js"></script>
 
 </body>
+
 </html>
