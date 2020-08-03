@@ -7,25 +7,31 @@ import (
 	"s4/crypto"
 )
 
-type Shares [][]byte
-
 var splitCode []byte = []byte("\n*=_=_=_=*\n\n")
 
-func DistributeBytes(in []byte, n, k uint64) (Shares, error) {
+// DistributeBytes takes the given in bytes and distributes them to n shares.
+// At least k shares are required to restore the initial data. For better performance and security use DistributeBytesAES
+func DistributeBytes(in []byte, n, k uint64) ([][]byte, error) {
 	if len(in) == 0 {
 		return nil, errors.New("in must not be empty")
 	}
 	return shamir.Split(in, int(n), int(k))
 }
 
-func RecoverBytes(in Shares) ([]byte, error) {
+// RecoverBytes recovers the given shares generate by DistributeBytes to their original payload.
+func RecoverBytes(in [][]byte) ([]byte, error) {
 	if len(in) == 0 {
 		return nil, errors.New("in must not be empty")
 	}
 	return shamir.Combine(in)
 }
 
-func DistributeBytesAES(in []byte, n, k uint64) (Shares, error) {
+// DistributeBytesAES takes the given in bytes and distributes them to n shares.
+// At least k shares are required to restore the initial data
+// In comparison to DistributeBytes this function uses AES on the payload and only distributes the key. This is a lot
+// fast, as AES is highly optimized and backed by hardware support in most modern systems. The downside is a massive increase
+// in share size, as every share now also has to contain the full AES payload.
+func DistributeBytesAES(in []byte, n, k uint64) ([][]byte, error) {
 	if len(in) == 0 {
 		return nil, errors.New("in must not be empty")
 	}
@@ -42,20 +48,21 @@ func DistributeBytesAES(in []byte, n, k uint64) (Shares, error) {
 		return nil, errors.Wrap(err, "could not aes encrypt input")
 	}
 
-	finalShares := make(Shares, len(byteShares))
+	finalShares := make([][]byte, len(byteShares))
 	for k, byteShare := range byteShares {
 		finalShares[k] = append(append(byteShare, splitCode...), ciphertext...)
 	}
 	return finalShares, nil
 }
 
-func RecoverBytesAES(in Shares) ([]byte, error) {
+// RecoverBytesAES recovers the given shares generate by DistributeBytesAES to their original payload.
+func RecoverBytesAES(in [][]byte) ([]byte, error) {
 	if len(in) == 0 {
 		return nil, errors.New("in must not be empty")
 	}
 
 	var cipherText []byte
-	shares := make(Shares, len(in))
+	shares := make([][]byte, len(in))
 	for k, s := range in {
 		s := bytes.Split(s, splitCode)
 		if len(s) != 2 {

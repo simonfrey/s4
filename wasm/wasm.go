@@ -44,7 +44,7 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 	useAES := true
 	format := ""
 
-	shares := make(s4.Shares, len(inStrings))
+	shares := make([][]byte, len(inStrings))
 	for k, v := range inStrings {
 		if len(v) == 0 {
 			continue
@@ -111,7 +111,7 @@ func distributeShares(this js.Value, i []js.Value) interface{} {
 		return js.Error{js.ValueOf("Could not decode base64 string: " + err.Error())}
 	}
 
-	var byteShares s4.Shares
+	var byteShares [][]byte
 	if useAES {
 		byteShares, err = s4.DistributeBytesAES(inBytes, uint64(i[1].Int()), uint64(i[2].Int()))
 	} else {
