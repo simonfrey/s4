@@ -46,7 +46,7 @@ func TestSecretSharingSameShares(t *testing.T) {
 	input := make([]byte, rand.Intn(30000-1000)+1000)
 	rand.Read(input)
 
-	n := uint64(rand.Intn(10-2) + 2)
+	n := uint64(rand.Intn(10-2) + 4)
 	k := uint64(rand.Intn(int(n)-2) + 2)
 
 	shares, err := DistributeBytes(input, n, k)
