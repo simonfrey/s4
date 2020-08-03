@@ -1,12 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"encoding/base64"
 	"fmt"
 	"regexp"
 	"s4"
-	"s4/crypto"
 	"strconv"
 	"strings"
 	"syscall/js"
@@ -15,8 +13,6 @@ import (
 const version string = "0.5"
 const AES_S4 string = "AES+S4"
 const S4 string = "S4"
-
-var splitCode []byte = []byte("\n*=_=_=_=*\n\n")
 
 var formatRegex = regexp.MustCompile(`(?sm)====== BEGIN \[s4 v(\d+\.\d+) \|\| (AES\+S4|S4)\]======\n(.*?)\n====== END.*?======`)
 
@@ -45,12 +41,10 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 		}
 	}
 
-	inBytes := make([][]byte, len(inStrings))
-
 	useAES := true
 	format := ""
-	cipherText := []byte{}
 
+	shares := make(s4.Shares, len(inStrings))
 	for k, v := range inStrings {
 		if len(v) == 0 {
 			continue
@@ -71,56 +65,23 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 		}
 
 		tmpBytes, err := base64.StdEncoding.DecodeString(formatMatch[3])
-		//TODO: AES encryption
 		if err != nil {
 			return js.Error{js.ValueOf("Could not decode base64 string: " + err.Error())}
 		}
-
-		if useAES {
-			s := bytes.Split(tmpBytes, splitCode)
-			if len(s) != 2 {
-				return js.Error{js.ValueOf("Invalid aes base64. Not splited.")}
-			}
-
-			if len(cipherText) == 0 {
-				cipherText = s[1]
-			} else if !bytes.Equal(cipherText, s[1]) {
-				return js.Error{js.ValueOf("AES Ciphertext differs between shares")}
-			}
-
-			tmpBytes = s[0]
-		}
-
-		inBytes[k] = tmpBytes
+		shares[k] = tmpBytes
 	}
 
+	var clearText []byte
+	var err error
 	if useAES {
-		recoveredKey, err := s4.RecoverBytes(inBytes)
-		if err != nil {
-			return js.Error{js.ValueOf("Could not distribute bytes: " + err.Error())}
-		}
-		if len(recoveredKey) != 32 {
-			return js.Error{js.ValueOf("Recovered key is not size 32 byte")}
-		}
-
-		key := [32]byte{}
-		for k, v := range recoveredKey {
-			key[k] = v
-		}
-
-		clearText, err := crypto.Decrypt(cipherText, &key)
-		if err != nil {
-			return js.Error{js.ValueOf("Could not aes decrypt input: " + err.Error())}
-		}
-
-		return js.ValueOf(base64.StdEncoding.EncodeToString(clearText))
+		clearText, err = s4.RecoverBytesAES(shares)
 	} else {
-		recoveredBytes, err := s4.RecoverBytes(inBytes)
-		if err != nil {
-			return js.Error{js.ValueOf("Could not recover bytes: " + err.Error())}
-		}
-		return js.ValueOf(base64.StdEncoding.EncodeToString(recoveredBytes))
+		clearText, err = s4.RecoverBytes(shares)
 	}
+	if err != nil {
+		return js.Error{js.ValueOf("Could not not recover bytes: " + err.Error())}
+	}
+	return js.ValueOf(base64.StdEncoding.EncodeToString(clearText))
 
 }
 
@@ -150,37 +111,22 @@ func distributeShares(this js.Value, i []js.Value) interface{} {
 		return js.Error{js.ValueOf("Could not decode base64 string: " + err.Error())}
 	}
 
+	var byteShares s4.Shares
 	if useAES {
-		key := crypto.NewEncryptionKey()
-		byteShares, err := s4.DistributeBytes(key[:], uint64(i[1].Int()), uint64(i[2].Int()))
-		if err != nil {
-			return js.Error{js.ValueOf("Could not distribute bytes: " + err.Error())}
-		}
-
-		ciphertext, err := crypto.Encrypt(inBytes, key)
-		if err != nil {
-			return js.Error{js.ValueOf("Could not aes encrypt input: " + err.Error())}
-		}
-
-		base64Shares := make([]interface{}, len(byteShares))
-		for k, byteShare := range byteShares {
-			base64Shares[k] = fmt.Sprintf(fmtString(useAES),
-				base64.StdEncoding.EncodeToString(append(append(byteShare, splitCode...), ciphertext...)))
-		}
-		return js.ValueOf(base64Shares)
+		byteShares, err = s4.DistributeBytesAES(inBytes, uint64(i[1].Int()), uint64(i[2].Int()))
 	} else {
-		byteShares, err := s4.DistributeBytes(inBytes, uint64(i[1].Int()), uint64(i[2].Int()))
-		if err != nil {
-			return js.Error{js.ValueOf("Could not distribute bytes: " + err.Error())}
-		}
-
-		base64Shares := make([]interface{}, len(byteShares))
-		for k, byteShare := range byteShares {
-			base64Shares[k] = fmt.Sprintf(fmtString(useAES),
-				base64.StdEncoding.EncodeToString(byteShare))
-		}
-		return js.ValueOf(base64Shares)
+		byteShares, err = s4.DistributeBytes(inBytes, uint64(i[1].Int()), uint64(i[2].Int()))
 	}
+	if err != nil {
+		return js.Error{js.ValueOf("Could not distribute bytes: " + err.Error())}
+	}
+
+	base64Shares := make([]interface{}, len(byteShares))
+	for k, byteShare := range byteShares {
+		base64Shares[k] = fmt.Sprintf(fmtString(useAES),
+			base64.StdEncoding.EncodeToString(byteShare))
+	}
+	return js.ValueOf(base64Shares)
 }
 
 func registerCallbacks() {
