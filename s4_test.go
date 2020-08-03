@@ -2,24 +2,33 @@ package s4
 
 import (
 	"bytes"
-	"log"
 	"math/rand"
 	"testing"
-	"time"
 )
 
-func TestSecretSharingEqual(t *testing.T) {
-	rand.Seed(time.Now().Unix())
+func randNK() (n uint64, k uint64) {
+	max := 255
+	min := 2
+	nI := rand.Intn(max-min) + min
+	kI := rand.Intn(nI-min) + min
+	if kI < 2 {
+		kI = 2
+	}
+	return uint64(nI), uint64(kI)
+}
 
+//
+//
+// Normal
+func TestSecretSharingEqual(t *testing.T) {
 	input := make([]byte, rand.Intn(30000-1000)+1000)
 	rand.Read(input)
 
-	n := uint64(rand.Intn(10-2) + 2)
-	k := uint64(rand.Intn(int(n)-2) + 2)
+	n, k := randNK()
 
 	shares, err := DistributeBytes(input, n, k)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	shift := uint64(rand.Intn(100-20) + 20)
@@ -31,27 +40,24 @@ func TestSecretSharingEqual(t *testing.T) {
 
 	nBytes, err := RecoverBytes(restoreSlice)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	if !bytes.Equal(input, nBytes) {
-		log.Fatal("Input and output bytes differ")
+		t.Fatal("Input and output bytes differ")
 	}
 
 }
 
 func TestSecretSharingSameShares(t *testing.T) {
-	rand.Seed(time.Now().Unix())
-
 	input := make([]byte, rand.Intn(30000-1000)+1000)
 	rand.Read(input)
 
-	n := uint64(rand.Intn(10-2) + 4)
-	k := uint64(rand.Intn(int(n)-2) + 2)
+	n, k := randNK()
 
 	shares, err := DistributeBytes(input, n, k)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	restoreSlice := make([][]byte, k)
@@ -59,28 +65,20 @@ func TestSecretSharingSameShares(t *testing.T) {
 		restoreSlice[i] = shares[0]
 	}
 
-	nBytes, err := RecoverBytes(restoreSlice)
-	if err != nil {
-		log.Fatal(err)
+	_, err = RecoverBytes(restoreSlice)
+	if err == nil {
+		t.Fatal("Duplicated parts where accepted")
 	}
-
-	if !bytes.Equal(input, nBytes) {
-		log.Fatal("Input and output bytes differ")
-	}
-
 }
 
 func TestSecretSharingDistributeEmptyInput(t *testing.T) {
-	rand.Seed(time.Now().Unix())
-
 	input := make([]byte, 0)
 
-	n := uint64(rand.Intn(10-2) + 2)
-	k := uint64(rand.Intn(int(n)-2) + 2)
+	n, k := randNK()
 
 	_, err := DistributeBytes(input, n, k)
-	if err != nil {
-		log.Fatal(err)
+	if err == nil {
+		t.Fatal("Tried to distribute empty input")
 	}
 }
 
@@ -88,7 +86,7 @@ func TestSecretSharingRecoverEmptyInput(t *testing.T) {
 	restoreSlice := make([][]byte, 0)
 	_, err := RecoverBytes(restoreSlice)
 	if err == nil {
-		log.Fatal("No error for empty input")
+		t.Fatal("No error for empty input")
 	}
 }
 
@@ -96,22 +94,19 @@ func TestSecretSharingRecoverEmptyInput2(t *testing.T) {
 	restoreSlice := make([][]byte, 100)
 	_, err := RecoverBytes(restoreSlice)
 	if err == nil {
-		log.Fatal("No error for empty input")
+		t.Fatal("No error for empty input")
 	}
 }
 
 func TestSecretSharingInEqual(t *testing.T) {
-	rand.Seed(time.Now().Unix())
-
 	input := make([]byte, rand.Intn(30000-1000)+1000)
 	rand.Read(input)
 
-	n := uint64(rand.Intn(10-2) + 2)
-	k := uint64(rand.Intn(int(n)-2) + 2)
+	n, k := randNK()
 
 	shares, err := DistributeBytes(input, n, k)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	shift := uint64(rand.Intn(100-20) + 20)
@@ -123,11 +118,11 @@ func TestSecretSharingInEqual(t *testing.T) {
 
 	nBytes, err := RecoverBytes(restoreSlice)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	if bytes.Equal(input, nBytes) {
-		log.Fatal("Input and output bytes are equal but they should not")
+		t.Fatal("Input and output bytes are equal but they should not")
 	}
 
 }
