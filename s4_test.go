@@ -126,3 +126,114 @@ func TestSecretSharingInEqual(t *testing.T) {
 	}
 
 }
+
+//
+//
+// AES
+func TestSecretSharingEqualAES(t *testing.T) {
+	input := make([]byte, rand.Intn(30000-1000)+1000)
+	rand.Read(input)
+
+	n, k := randNK()
+
+	shares, err := DistributeBytesAES(input, n, k)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	shift := uint64(rand.Intn(100-20) + 20)
+	restoreSlice := make([][]byte, k)
+	for i := uint64(0); i < k; i++ {
+		ik := (i + shift) % n
+		restoreSlice[i] = shares[ik]
+	}
+
+	nBytes, err := RecoverBytesAES(restoreSlice)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !bytes.Equal(input, nBytes) {
+		t.Fatal("Input and output bytes differ")
+	}
+
+}
+
+func TestSecretSharingSameSharesAES(t *testing.T) {
+	input := make([]byte, rand.Intn(30000-1000)+1000)
+	rand.Read(input)
+
+	n, k := randNK()
+
+	shares, err := DistributeBytesAES(input, n, k)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	restoreSlice := make([][]byte, k)
+	for i := uint64(0); i < k; i++ {
+		restoreSlice[i] = shares[0]
+	}
+
+	_, err = RecoverBytesAES(restoreSlice)
+	if err == nil {
+		t.Fatal("Duplicated parts where accepted")
+	}
+}
+
+func TestSecretSharingDistributeEmptyInputAES(t *testing.T) {
+	input := make([]byte, 0)
+
+	n, k := randNK()
+
+	_, err := DistributeBytesAES(input, n, k)
+	if err == nil {
+		t.Fatal("Tried to distribute empty input")
+	}
+}
+
+func TestSecretSharingRecoverEmptyInputAES(t *testing.T) {
+	restoreSlice := make([][]byte, 0)
+	_, err := RecoverBytesAES(restoreSlice)
+	if err == nil {
+		t.Fatal("No error for empty input")
+	}
+}
+
+func TestSecretSharingRecoverEmptyInput2AES(t *testing.T) {
+	restoreSlice := make([][]byte, 100)
+	_, err := RecoverBytesAES(restoreSlice)
+	if err == nil {
+		t.Fatal("No error for empty input")
+	}
+}
+
+func TestSecretSharingInEqualAES(t *testing.T) {
+	input := make([]byte, rand.Intn(30000-1000)+1000)
+	rand.Read(input)
+
+	n, k := randNK()
+
+	shares, err := DistributeBytesAES(input, n, k)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	shift := uint64(rand.Intn(100-20) + 20)
+	restoreSlice := make([][]byte, k-1)
+	for i := uint64(0); i < k-1; i++ {
+		ik := (i + shift) % n
+		restoreSlice[i] = shares[ik]
+	}
+
+	nBytes, err := RecoverBytesAES(restoreSlice)
+	if err == nil {
+		t.Fatal("Recovery worked, but it should not")
+
+	}
+
+	if bytes.Equal(input, nBytes) {
+		t.Fatal("Input and output bytes are equal but they should not")
+	}
+
+}
