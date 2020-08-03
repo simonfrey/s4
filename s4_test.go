@@ -4,15 +4,19 @@ import (
 	"bytes"
 	"math/rand"
 	"testing"
+	"time"
 )
 
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 func randNK() (n uint64, k uint64) {
 	max := 255
 	min := 2
 	nI := rand.Intn(max-min) + min
-	kI := rand.Intn(nI-min) + min
-	if kI < 2 {
-		kI = 2
+	kI := 2
+	if nI-min > 0 {
+		kI = rand.Intn(nI-min) + min
 	}
 	return uint64(nI), uint64(kI)
 }
