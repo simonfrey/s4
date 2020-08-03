@@ -1,7 +1,8 @@
+# github.com/hashicorp/errwrap v1.0.0
+github.com/hashicorp/errwrap
+# github.com/hashicorp/vault v1.2.1-0.20200801002527-5f270a4cafb9
+## explicit
+github.com/hashicorp/vault/shamir
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/posener/sharedsecret v0.0.0-20200414095807-b90bfadc28af
-## explicit
-github.com/posener/sharedsecret
-github.com/posener/sharedsecret/internal/polynom
