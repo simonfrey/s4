@@ -1,114 +1,106 @@
-let encryptForm = new Vue({
-    el: '#encryptForm',
-    data: {
-        iString: "",
-        n:2,
-        k:2,
-        oArray:Array("",""),
-        aes:true,
-        iShow: true,
-    },
-    computed: {
-        outArray: {
-            // getter
-            get: function () {
-                return this.oArray
-            },
-            // setter
-            set: function (newValue) {
-                this.oArray = newValue
-            }
+var encryptState = {
+  requiredShares: 2,
+  totalShares: 2,
+  inputString: '',
+  aes: true,
+  outputs: []
+}
 
-        },
-        show: {
-            // getter
-            get: function () {
-                return this.iShow
-            },
-            // setter
-            set: function (newValue) {
-                this.iShow = newValue
-            }
+function updateEncrypt(obj) {
+  mergeDeep(encryptState, obj)
+  calcEncryptOutputs();
+  render();
+}
 
-        },
-        useAES:{
-
-            // getter
-            get: function () {
-                return Boolean(this.aes)
-            },
-            // setter
-            set: function (newValue) {
-                this.aes = Boolean(newValue)
-                this.distribute()
+function renderEncrypt() {
+  return el('div', {class:'encryptForm'}, [
+    el('div', {className:'columns is-horizontal is-vcentered'}, [
+      el('div', {className:'column'}, [
+        'Minimum required shares:',
+        el('input', {
+          className: 'input', 
+          type: 'number',
+          min: 2, 
+          max: encryptState.totalShares,
+          value: encryptState.requiredShares,
+          placeholder: 'Minimum required shares',
+          oninput: function(e) {
+            var val = Number(e.target.value);
+            if (val > encryptState.totalShares) {
+              val = encryptState.totalShares;
             }
-        },
-        shares: {
-            // getter
-            get: function () {
-                return Number(this.n)
-            },
-            // setter
-            set: function (newValue) {
-                this.n = Number(newValue)
-                if (this.n < this.requiredShareCount){
-                    this.requiredShareCount = this.n
-                }
-
-                this.distribute()
+            updateEncrypt({requiredShares: val});
+          }
+        })
+      ]),
+      el('div', {className:'column'}, [
+        'Total Shares: ',
+        el('input', {
+          className: 'input', 
+          type: 'number',
+          min: 2, 
+          value: encryptState.totalShares,
+          placeholder: 'Shares',
+          oninput: function(e) {
+            var val = Number(e.target.value);
+            updateEncrypt({totalShares: val});
+          }
+        })
+      ]),
+      el('div', {className:'column'}, [
+        el('label', {className: 'checkbox'}, [
+          el('input', {
+            type: 'checkbox', 
+            className: 'checkbox', 
+            checked: encryptState.aes, 
+            onchange: function(e){
+              updateEncrypt({aes: e.target.checked})
             }
+          }),
+          ' Use AES(256 bit) for data and distribute key'          
+        ])
+      ])
+    ]),
+    el('div', {className:'columns'}, [
+      el('div', {className:'column'}, [
+        el('textarea', {
+          id: 'inputString',
+          className:'textarea',
+          placeholder: 'Whatever message / binary data you want.',
+          oninput: function(e) {
+            var pos = e.target.selectionEnd;
+            updateEncrypt({inputString: e.target.value});
+            var newText = document.getElementById('inputString');
+            newText.focus();
+            newText.selectionStart = pos;
+            newText.selectionEnd = pos;
+          }
+        }, encryptState.inputString)
+      ])
+    ]),
+    el('div', {className:'columns is-horizontal'}, renderOutBoxes()),
+  ]);
+}
 
-        },
-        requiredShareCount: {
-            // getter
-            get: function () {
-                if (this.k > this.share){
-                    return Number(this.shares)
-                }
-                return Number(this.k)
-            },
-            // setter
-            set: function (newValue) {
-                if (newValue > this.shares){
-                    return
-                }
+function renderOutBoxes(){
+  return encryptState.outputs.map(function(item){
+    return el('div', {className:'column'}, [
+      el('textarea', {className:'textarea', readOnly: true}, item)
+    ]);
+  });
+}
 
-                this.k = Number(newValue)
-                this.distribute()
-            }
+function calcEncryptOutputs() {
+  encryptState.outputs = Array(encryptState.totalShares).fill("");
+  if (encryptState.inputString.length === 0 || encryptState.totalShares <= 0 || encryptState.requiredShares <= 0 || encryptState.requiredShares>encryptState.totalShares) {
+    return  
+  }
 
-        },
-        inputString: {
-            // getter
-            get: function () {
-                return String(this.iString)
-            },
-            // setter
-            set: function (newValue) {
-                this.iString = String(newValue)
-                this.distribute()
-            }
+  var res = Distribute_fours((String(btoa(encryptState.inputString))),Number(encryptState.totalShares),Number(encryptState.requiredShares),Boolean(encryptState.aes));
+  if (typeof res === 'string'){
+    state.error = res;
+    encryptState.outputs = Array(encryptState.totalShares).fill("")
+  }
 
-        },
-    },
-    methods:{
-        distribute:function () {
-            if (this.inputString.length === 0){
-                this.outArray = Array(this.shares).fill("")
-                return
-            }
-            if (this.shares <= 0 || this.requiredShareCount<=0||this.requiredShareCount>this.shares){
-                return
-            }
-
-            res = Distribute_fours((String(btoa(this.inputString))),Number(this.shares),Number(this.requiredShareCount),Boolean(this.useAES))
-            if (typeof res === 'string'){
-                errorNotification.error = res
-                this.outArray = Array(this.shares).fill("")
-                return
-            }
-            this.outArray = res
-            errorNotification.error = ""
-        }
-    }
-})
+  encryptState.outputs = res;
+}

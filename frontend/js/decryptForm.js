@@ -1,84 +1,75 @@
 const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
 
-let decryptForm = new Vue({
-    el: '#decryptForm',
-    data: {
-        oString: "",
-        n:2,
-        oArray:Array("",""),
-        iShow:false,
-    },
-    computed: {
-        inFields: {
-            // getter
-            get: function () {
-                return this.oArray
-            },
-            // setter
-            set: function (newValue) {
-                this.oArray = newValue
-                this.recover()
+var decryptState = {
+  shares: 2,
+  inputs: ['', ''],
+  output: ''
+}
+
+function updateDecrypt(obj) {
+  mergeDeep(decryptState, obj)
+  calcDecryptOutput();
+  render();
+}
+
+function renderDecrypt() {
+  return el('div', {class:'decryptForm columns'}, [
+    el('div', {className:'column is-vertical'}, [
+      el('div', {className:'columns is-horizontal'}, [
+        el('div', {className:'column'}, [
+          'Shares: ',
+          el('input', {
+            className: 'input', 
+            type: 'number',
+            min: 2,
+            value: decryptState.shares,
+            placeholder: 'Shares',
+            oninput: function(e) {
+              var val = Number(e.target.value);
+              updateDecrypt({shares: val, inputs: Array(val).fill('')});
             }
+          })
+        ])
+      ]),
+      el('div', {className:'columns is-horizontal'}, renderInputs()),
+      el('div', {className:'columns'}, [
+        el('div', {className:'column'}, [
+          el('textarea', {
+            id: 'output',
+            className:'textarea',
+            placeholder: 'Your decrypted output'
+          }, decryptState.output)
+        ])
+      ])
+    ])
+  ]);
+}
 
-        },
-        show: {
-            // getter
-            get: function () {
-                return this.iShow
-            },
-            // setter
-            set: function (newValue) {
-                this.iShow = newValue
-            }
-
-        },
-        shares: {
-            // getter
-            get: function () {
-                return Number(this.n)
-            },
-            // setter
-            set: function (newValue) {
-                this.n = Number(newValue)
-                this.inFields = Array(this.n).fill("")
-                this.outputString = ""
-                this.recover()
-            }
-
-        },
-        outputString: {
-            // getter
-            get: function () {
-                return String(this.oString)
-            },
-            // setter
-            set: function (newValue) {
-                this.oString = String(newValue)
-            }
-
-        },
-    },
-    methods:{
-        recover:function () {
-            console.log("recover")
-
-           res = Recover_fours(this.inFields)
-
-            if (!base64regex.test(res)){
-                this.outputString = ""
-                errorNotification.error = res
-                return;
-            }
-
-            this.outputString = atob(res)
-            errorNotification.error = ""
-
-
-        },
-        setInField: function (index,event) {
-            newA = this.inFields
-            newA[index] = String(event.target.value)
-            this.inFields = newA
+function renderInputs(){
+  return decryptState.inputs.map(function(item, i){
+    return el('div', {className:'column'}, [
+      el('textarea', {
+        className:'textarea', 
+        placeholder: 'Your encrypted input share',
+        oninput: function(e){
+          var pos = e.target.selectionEnd;
+          decryptState.inputs[i] = e.target.value;
+          updateDecrypt({inputs: decryptState.inputs});
         }
-    }
-})
+      }, item)
+    ]);
+  });
+}
+
+function calcDecryptOutput() {
+  res = Recover_fours(decryptState.inputs);
+
+  if (!base64regex.test(res)){
+      decryptState.output = ""
+      state.error = res
+      return;
+  }
+
+  decryptState.output = atob(res)
+  state.error = ""
+}
