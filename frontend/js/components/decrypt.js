@@ -81,6 +81,8 @@ class Encrypt extends Component {
               className:'textarea',
               placeholder: 'Whatever message / binary data you want.',
               oninput: function(e) {
+                // We rebuild the textarea on each state change, so this hack
+                // is to keep your cursor position correct on the new textarea
                 var pos = e.target.selectionEnd;
                 this.update({inputString: e.target.value});
                 var newText = document.getElementById('inputString');
