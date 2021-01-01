@@ -1,3 +1,6 @@
+// trigger initial render for decrypt tab
+handleShareChange();
+
 function handleShareChange() {
   var total = document.getElementById("decryptShares").valueAsNumber;
   var existing = document.querySelectorAll("#inputs>div").length;

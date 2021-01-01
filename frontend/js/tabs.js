@@ -15,9 +15,4 @@ function changeTab(activeTab) {
   document.querySelectorAll('.tab').forEach(function(tab){
     tab.style.display = tab.id === activeTab ? 'block' : 'none';
   });
-
-  // trigger initial render for decrypt tab
-  if (activeTab == 'decrypt') {
-    handleShareChange();
-  }
 }
