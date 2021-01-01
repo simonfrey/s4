@@ -12,7 +12,6 @@ function handleShareChange() {
   if (total < existing) {
     removeDecryptInputs(existing - total);
   } else if (total > existing) {
-    // add inputs
     addDecryptInputs(total - existing);
   }
 }
