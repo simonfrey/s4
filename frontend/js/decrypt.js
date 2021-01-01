@@ -1,5 +1,14 @@
-function handleShareChange(total) {
+function handleShareChange() {
+  var total = document.getElementById("decryptShares").valueAsNumber;
   var existing = document.querySelectorAll("#inputs>div").length;
+
+  // validate
+  if (total < 2) {
+    total = 2;
+    document.getElementById("decryptShares").value = 2;
+  }
+
+  // add or remove textareas
   if (total < existing) {
     removeDecryptInputs(existing - total);
   } else if (total > existing) {
@@ -31,9 +40,6 @@ function removeDecryptInputs(count) {
 }
 
 function doDecrypt() {
-  // initalize
-  handleShareChange(document.getElementById("decryptShares").valueAsNumber);
-
   // collect inputs
   var inputs = [];
   document.querySelectorAll("#inputs>div").forEach(function(div){
@@ -44,8 +50,6 @@ function doDecrypt() {
   if (inputs.filter(Boolean).length === 0) {
     return;
   }
-  
-  console.log(inputs);
   
   var res = Recover_fours(inputs)
   var outEl = document.getElementById("output");

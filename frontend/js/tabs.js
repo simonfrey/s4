@@ -16,10 +16,8 @@ function changeTab(activeTab) {
     tab.style.display = tab.id === activeTab ? 'block' : 'none';
   });
 
-  // trigger initial render
-  if (activeTab == 'encrypt') {
-    doEncrypt();
-  } else if (activeTab == 'decrypt') {
-    doDecrypt();
+  // trigger initial render for decrypt tab
+  if (activeTab == 'decrypt') {
+    handleShareChange();
   }
 }
