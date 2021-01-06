@@ -1,4 +1,4 @@
-function doEncrypt(el) {
+function doEncrypt() {
   var thresholdEl = document.getElementById('threshold');
   var sharesEl = document.getElementById('shares');
   
@@ -12,11 +12,9 @@ function doEncrypt(el) {
   }
 
   // ensure threshold isn't higher than shares
-  if (el && el.id === 'shares') {
-    thresholdEl.setAttribute("max", el.value);
-    if (el.value < thresholdEl.value) {
-      thresholdEl.value = el.value;
-    }
+  thresholdEl.setAttribute("max", sharesEl.valueAsNumber);
+  if (sharesEl.valueAsNumber < thresholdEl.valueAsNumber) {
+    thresholdEl.value = sharesEl.value;
   }
 
   // snag values from the dom

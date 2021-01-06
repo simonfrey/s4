@@ -42,20 +42,20 @@
               <div class="column is-vertical">
                   <div class="columns is-horizontal is-vcentered">
                       <div class="column">
-                          Minimum required shares: <input class="input" type="number" value="2" min="2" id="threshold" onChange="doEncrypt(this)" placeholder="Minimum required shares">
+                          Minimum required shares: <input class="input" type="number" value="2" min="2" id="threshold" onChange="doEncrypt()" placeholder="Minimum required shares">
                       </div>
                       <div class="column ">
-                          Shares: <input class="input" value="3" min="2" type="number" id="shares" onChange="doEncrypt(this)" placeholder="Shares">
+                          Shares: <input class="input" value="3" min="2" type="number" id="shares" onChange="doEncrypt()" placeholder="Shares">
                       </div>
                       <div class="column ">
                           <label class="checkbox">
-                              <input type="checkbox" onChange="doEncrypt(this)" class="checkbox" id="useAES"> Use AES(256 bit) for data and
+                              <input type="checkbox" onChange="doEncrypt()" class="checkbox" id="useAES"> Use AES(256 bit) for data and
                               distribute key</label>
                       </div>
                   </div>
                   <div class="columns">
                       <div class="column">
-                          <textarea class="textarea" id="input" onInput="doEncrypt(this)"
+                          <textarea class="textarea" id="input" onInput="doEncrypt()"
                               placeholder="Whatever message / binary data you want."></textarea>
                       </div>
                   </div>
