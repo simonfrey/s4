@@ -2,7 +2,7 @@
 
 With **S**imple **S**hamir's **S**ecret **S**haring (s4) I want to provide you an easy to use interface for this beautiful little piece of math.
 
-Please note that s4 is provided as it is and I do not take responsibility for any bugs. s4 is a tiny layer around [sharedsecret](https://github.com/posener/sharedsecret) and golang's [AES encryption](https://github.com/gtank/cryptopasta/blob/master/encrypt.go).
+Please note that s4 is provided as it is and I do not take responsibility for any bugs. s4 is a tiny layer around [hashicorp vault shamir](https://github.com/hashicorp/vault) and golang's [AES encryption](https://github.com/gtank/cryptopasta/blob/master/encrypt.go).
 
 ## 📚 Usage as library
 
