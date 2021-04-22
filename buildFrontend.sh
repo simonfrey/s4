@@ -5,7 +5,7 @@ set -eu
 echo "[1] Build wasm"
 wasmPayloadFile=$(mktemp)
 trap 'rm -f $wasmPayloadFile' ERR EXIT
-GOOS=js GOARCH=wasm go build -o "$wasmPayloadFile" wasm/wasm.go
+GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o "$wasmPayloadFile" wasm/wasm.go
 
 echo "[2] Pack wasm into javascript"
 wasmJsPayloadFile="frontend/js/wasmPayload.js"
