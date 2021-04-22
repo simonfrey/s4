@@ -3,7 +3,6 @@ window.addEventListener('DOMContentLoaded', function() {
   handleShareChange();
 });
 
-
 function handleShareChange() {
   var total = document.getElementById("decryptShares").valueAsNumber;
   var existing = document.querySelectorAll("#inputs>div").length;
@@ -27,7 +26,7 @@ function addDecryptInputs(count) {
   for (var i=0; i<count;i++) {
     var div = document.createElement('div');
     div.className = "column";
-  
+
     var ta = document.createElement("textarea");
     ta.className = 'textarea';
     ta.addEventListener('input', doDecrypt);
@@ -55,7 +54,7 @@ function doDecrypt() {
   if (inputs.filter(Boolean).length === 0) {
     return;
   }
-  
+
   var res = Recover_fours(inputs)
   var outEl = document.getElementById("output");
   var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;

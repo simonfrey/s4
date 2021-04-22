@@ -13,4 +13,15 @@ echo 'const wasmPayloadInlineURL = `data:application/wasm;base64,' > "$wasmJsPay
 base64 "$wasmPayloadFile" >> "$wasmJsPayloadFile"
 echo '`' >> "$wasmJsPayloadFile"
 
-echo "[3] Done. You can upload the frontend folder to your server or use it locally"
+echo "[3] Pack css & javascript into a single HTML file"
+htmlTemplate="frontend/index.template.html"
+mkdir -p build
+{
+  awk '1;/style/{exit}' "$htmlTemplate"
+  cat frontend/css/*
+  awk '/<\/style/,0;/script/{exit}' "$htmlTemplate"
+  cat frontend/js/*
+  awk '/<\/script/,0' "$htmlTemplate"
+}  > build/index.html
+
+echo "[4] Done. You can upload the build folder to your server or use it locally"

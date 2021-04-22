@@ -15,10 +15,10 @@ I assume you have a [go](https://golang.org/) build environment setup in your ma
 
 In order to build & pack the web assembly file for the frontend please use the following command in the top level directory:
 ```
-bash buildFrontend.sh
+./build.sh
 ```
 
-This will build you the required file. You now can copy to `frontend` folder to your web server (or use it locally) and it
+This will build you the required file. You now can copy to `build` folder to your web server (or use it locally) and it
 should run s4 as intended.
 
 ## 💸 Report Bugs & Tip

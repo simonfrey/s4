@@ -8,21 +8,23 @@ if (!WebAssembly.instantiateStreaming) {
     };
 }
 
-const go = new Go();
-let mod, inst;
+document.addEventListener("DOMContentLoaded", (event) => {
+    const go = new Go();
+    let mod, inst;
 
-var wasmResponse =
-WebAssembly.instantiateStreaming(fetch(wasmPayloadInlineURL), go.importObject).then(
-    async  result => {
-        console.log("Loaded")
-        mod = result.module;
-        inst = result.instance;
+    var wasmResponse =
+    WebAssembly.instantiateStreaming(fetch(wasmPayloadInlineURL), go.importObject).then(
+        async  result => {
+            console.log("Loaded")
+            mod = result.module;
+            inst = result.instance;
 
-        window.wasmLoaded = true;
-        await go.run(inst);
-        inst = await WebAssembly.instantiate(mod, go.importObject);
-    }
-).catch(err =>{
-    console.log("Webassembly ERROR: ",err)
-    errorNotification.error = err
+            window.wasmLoaded = true;
+            await go.run(inst);
+            inst = await WebAssembly.instantiate(mod, go.importObject);
+        }
+    ).catch(err =>{
+        console.log("Webassembly ERROR: ",err)
+        errorNotification.error = err
+    });
 });
