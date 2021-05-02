@@ -1,5 +1,7 @@
-// set initial tab
-changeTab('encrypt');
+window.addEventListener('DOMContentLoaded', function() {
+  // set initial tab
+  changeTab('encrypt');
+});
 
 function changeTab(activeTab) {
   // loop through tab handles
