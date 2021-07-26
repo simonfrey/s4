@@ -1,4 +1,193 @@
-#infoContainer ul{
-    padding:0.2em;
-    list-style: disc;
+:root {
+    --dark-grey: #363636;
+    --light-grey: #dbdbdb;
+    --red: #f14668;
+    --blue: #3273dc;
+}
+
+html, body {
+    margin: 0;
+    color: #4a4a4a;
+    font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#page {
+    max-width: 1344px;
+    margin: 3em auto 0;
+}
+
+h1 {
+    color: var(--dark-grey);
+    margin-bottom: .2em;
+}
+
+h1 + p {
+    margin-top: 0;
+    font-size: 1.25em;
+}
+
+#securityAlerts p {
+    color: var(--red);
+}
+
+#error {
+    position: relative;
+}
+
+#error button {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    background-color: #0a0a0a33;
+    border: none;
+    border-radius: 290486px;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+#error button:hover {
+    background-color: #0a0a0a4d;
+}
+
+#error button::before {
+    height: 2px;
+    width: 50%;
+}
+
+#error button::after {
+    height: 50%;
+    width: 2px;
+}
+
+#error button::after, #error button::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: #fff;
+    content: "";
+    display: block;
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform-origin: center center;
+}
+
+#error p {
+    display: block;
+    background-color: var(--red);
+    color: #fff;
+    border-radius: 4px;
+    padding: 1em;
+}
+
+nav ul {
+    list-style: none;
+    border-bottom: solid 1px var(--light-grey);
+    display: flex;
+    padding: 0;
+    margin-bottom: 1.5em;
+}
+
+nav li {
+    border-radius: 4px 4px 0 0;
+    padding: .6em 1em;
+    margin-bottom: -1px;
+}
+
+nav li.active {
+    border: solid 1px var(--light-grey);
+    border-bottom-color: #fff !important;
+    color: var(--blue);
+}
+
+nav li:not(.active):hover {
+    background-color: #f5f5f5;
+    color: var(--dark-grey);
+    cursor: pointer;
+}
+
+section > * {
+    margin-bottom: 1.5em;
+}
+
+#encrypt > div, #decrypt > div {
+    display: flex;
+    gap: 1em;
+}
+
+#encrypt > textarea, #decrypt > textarea {
+    width: 100%;
+}
+
+#encrypt > div > *, #decrypt > div > * {
+    flex-grow: 1;
+}
+
+#encrypt > div > div, #decrypt > div > div {
+    display: flex;
+    flex-direction: column;
+}
+
+#encrypt > div > div:nth-child(3) {
+    flex-direction: row;
+    align-items: center;
+}
+
+input, textarea {
+    border: 1px solid var(--light-grey);
+    border-radius: 4px;
+    color: var(--dark-grey);
+    font-size: 1rem;
+}
+
+input {
+    height: 2.5em;
+    padding: 0 .75em;
+}
+
+textarea {
+    box-sizing: border-box;
+    min-height: 8em;
+    max-height: 40em;
+    padding: .75em;
+    resize: vertical;
+}
+
+a {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--dark-grey);
+}
+
+@media screen and (max-width: 1400px) {
+    #page {
+        max-width: 1152px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #page {
+        max-width: 960px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #page {
+        max-width: unset;
+        margin: 2em 1em 0;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    #encrypt > div, #decrypt > div {
+        flex-direction: column;
+    }
+}
+
+/* Tabs logic */
+#error, #decrypt, #info {
+    display: none;
 }

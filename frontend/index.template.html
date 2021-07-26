@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title> Simple Shamir's Secret Sharing (s4)</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src: 'self'; form-action: 'none'; connect-src: 'data'">
+    <style>
+    </style>
+    <script async>
+    </script>
+</head>
+
+<body>
+
+<div id="page">
+    <h1>
+        Simple Shamir's Secret Sharing (s4)
+    </h1>
+    <p>
+        Share your secret with a cryptographically secure method. All running locally in your browser. Your secrets never leave your machine!
+    </p>
+
+    <div id="securityAlerts">
+        <p id="notOffline">Your browser is online. Please disconnect from your network to use s4 in a safer way.</p>
+        <p id="notFileSaved">You are running s4 from a webserver, this is insecure. Please save the webpage (Ctrl+S) locally and open this file.</p>
+    </div>
+
+    <nav>
+        <ul>
+            <li class="active" data-section='encrypt'>Encrypt</li>
+            <li data-section='decrypt'>Decrypt</li>
+            <li data-section='info'>Info</li>
+        </ul>
+    </nav>
+
+    <div id="error">
+        <button></button>
+        <p></p>
+    </div>
+
+    <section id="encrypt">
+        <div>
+            <div>
+                <label for="encryptThreshold">Minimum required shares:</label>
+                <input autocomplete="off" type="number" value="2" min="2" id="encryptThreshold" placeholder="Minimum required shares"/>
+            </div>
+            <div>
+                <label for="encryptShares">Shares:</label>
+                <input autocomplete="off" value="3" min="2" type="number" id="encryptShares" placeholder="Shares"/>
+            </div>
+            <div>
+                <input autocomplete="off" type="checkbox" id="encryptUseAES"/>
+                <label for="encryptUseAES">Use AES(256 bit) for data and distribute key</label>
+            </div>
+        </div>
+        <textarea autocomplete="off" id="encryptInput" placeholder="Whatever message / binary data you want."></textarea>
+        <div id="encryptOutput"></div>
+    </section>
+
+    <section id="decrypt">
+        <div>
+            <div>
+                <label for="decryptShares">Shares:</label>
+                <input id="decryptShares" value="2" min="2" type="number" placeholder="Shares"/>
+            </div>
+        </div>
+        <div id="decryptInputs"></div>
+        <textarea autocomplete="off" id="decryptOutput" readonly placeholder="Your decrypted output"></textarea>
+    </section>
+
+    <section id="info">
+        <div>
+            <h2>Videos</h2>
+            <p>
+                The following youtube videos explain you more about
+                <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing" target="_blank">
+                    Shamir's Secret Sharing:
+                </a>
+            </p>
+            <ul>
+                <li>
+                    <a href="https://www.youtube-nocookie.com/embed/TQ-DsEZBuQY" target="_blank">
+                        What is Key Sharding? Shamir’s Secret Sharing Explained
+                    </a>
+                    (<b>Easy</b>)
+                </li>
+                <li>
+                    <a href="https://www.youtube-nocookie.com/embed/rWPZoz0aux4" target="_blank">
+                        Shamir's Secret Sharing - Solution and alternative to Lagrange
+                    </a>
+                    (<b>More in-depth</b>)
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2>About s4</h2>
+            <p>
+                With <b>S</b>imple <b>S</b>hamir's <b>S</b>ecret <b>S</b>haring (s4) I want to provide you an
+                easy to use interface for this beautiful little piece of math.
+            </p>
+            <p>s4 is open source and provided as it is. You can find the code on
+                <a href="https://github.com/simonfrey/s4/issues" target="_blank">Github</a>
+                and this website works completely offline. Save it to your computer (Ctrl+S) in order to not lose access to the
+                s4 in case this website will be down at any point in the future.
+            </p>
+            <p>
+                Please note that s4 is provided as it is and I do not take responsibility for any bugs. s4 is a tiny layer around
+                <a href="https://github.com/hashicorp/vault" target="_blank">hashicorp vault shamir</a>
+                and golangs
+                <a href="https://github.com/gtank/cryptopasta/blob/master/encrypt.go" target="_blank">AES encryption</a>
+                .
+            </p>
+            <p>
+                If you find any issues, please report them via
+                <a href="https://github.com/simonfrey/s4/issues" target="_blank">Github issues</a>
+                and if you want to tip me for the work on this project,
+                <a href="https://simon-frey.com/tip" target="_blank"> feel free to do so !</a>
+            </p>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

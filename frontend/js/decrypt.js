@@ -1,70 +1,54 @@
-// trigger initial render for decrypt tab
-window.addEventListener('DOMContentLoaded', function() {
-  handleShareChange();
-});
+function handleDecryptShareChange() {
 
+    const inputsEl = document.getElementById("decryptInputs")
+    const sharesEl = document.getElementById("decryptShares")
 
-function handleShareChange() {
-  var total = document.getElementById("decryptShares").valueAsNumber;
-  var existing = document.querySelectorAll("#inputs>div").length;
+    let wanted = sharesEl.valueAsNumber
+    const existing = inputsEl.childNodes.length
 
-  // validate
-  if (total < 2) {
-    total = 2;
-    document.getElementById("decryptShares").value = 2;
-  }
+    // Validate
+    if (wanted < 2) {
+        wanted = 2
+        sharesEl.value = 2
+    }
 
-  // add or remove textareas
-  if (total < existing) {
-    removeDecryptInputs(existing - total);
-  } else if (total > existing) {
-    addDecryptInputs(total - existing);
-  }
-}
-
-function addDecryptInputs(count) {
-  var inputsEl = document.getElementById("inputs");
-  for (var i=0; i<count;i++) {
-    var div = document.createElement('div');
-    div.className = "column";
-  
-    var ta = document.createElement("textarea");
-    ta.className = 'textarea';
-    ta.addEventListener('input', doDecrypt);
-
-    div.appendChild(ta);
-    inputsEl.append(div);
-  }
-}
-
-function removeDecryptInputs(count) {
-  var inputsEl = document.getElementById("inputs");
-  for (var i=0; i<count;i++) {
-    inputsEl.removeChild(inputsEl.lastChild);
-  }
+    // Adjust the number of textareas
+    if (wanted > existing) {
+        for (let i = 0; i < wanted - existing; i++) {
+            const ta = document.createElement("textarea")
+            ta.placeholder = "Enter a share here"
+            ta.addEventListener("input", doDecrypt)
+            inputsEl.append(ta)
+        }
+    } else if (wanted < existing) {
+        for (let i = 0; i < existing - wanted; i++) {
+            inputsEl.removeChild(inputsEl.lastChild)
+        }
+    }
 }
 
 function doDecrypt() {
-  // collect inputs
-  var inputs = [];
-  document.querySelectorAll("#inputs>div").forEach(function(div){
-    inputs.push(div.children[0].value);
-  });
 
-  // check if they are all empty for no-op
-  if (inputs.filter(Boolean).length === 0) {
-    return;
-  }
-  
-  var res = Recover_fours(inputs)
-  var outEl = document.getElementById("output");
-  var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+    // Collect inputs
+    let inputs = []
+    document.querySelectorAll("#decryptInputs > textarea").forEach((ta) => {
+        inputs.push(ta.value)
+    })
 
-  if (!base64regex.test(res)){
-    outEl.innerText = '';
-    setError(res);
-  } else {
-    outEl.innerText = atob(res);
-    setError('');
-  }
+    // Check if they are all empty for no-op
+    if (inputs.filter(Boolean).length === 0) {
+        return
+    }
+
+    const res = Recover_fours(inputs)
+    const outEl = document.getElementById("decryptOutput")
+    const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/
+
+    if (!base64regex.test(res)) {
+        outEl.innerText = ""
+        setError(res)
+    } else {
+        outEl.innerText = atob(res)
+        setError("")
+    }
 }

@@ -1,3 +1,4 @@
 .idea
-wasm.wasm
+*.iml
 wasmPayload.js
+build/
