@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/simonfrey/s4"
 	"regexp"
-	"s4"
 	"strconv"
 	"strings"
 	"syscall/js"

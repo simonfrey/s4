@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/hashicorp/vault/shamir"
 	"github.com/pkg/errors"
-	"s4/crypto"
+	"github.com/simonfrey/s4/crypto"
 )
 
 var splitCode []byte = []byte("\n*=_=_=_=*\n\n")
