@@ -14,6 +14,7 @@ base64 "$wasmPayloadFile" >> "$wasmJsPayloadFile"
 echo '`' >> "$wasmJsPayloadFile"
 
 echo "[3] Pack css & javascript into a single HTML file"
+cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" frontend/js/wasm_exec.js
 htmlTemplate="frontend/index.template.html"
 mkdir -p build
 {
