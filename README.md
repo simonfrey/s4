@@ -21,6 +21,16 @@ In order to build & pack the web assembly file for the frontend please use the f
 This will build you the required file. You now can copy to `build` folder to your web server (or use it locally) and it
 should run s4 as intended.
 
+### Building the frontend in case you don't have a [go](https://golang.org/) build environment setup in your machine.
+
+Build the image that builds the frontend:  
+`docker build . -t s4`  
+
+Build the frontend using the image:  
+` docker run -it --rm -v ./build:/app/build s4`  
+
+Find the frontend in the `build/` directory, containing all resources in-line.  
+
 ## 💸 Report Bugs & Tip
 
 Please use [Github Issues](https://github.com/simonfrey/s4/issues) in order to report bugs
