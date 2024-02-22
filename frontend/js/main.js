@@ -64,3 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         setError(err)
     }
 });
+
+// Cleanup share code, so that it work offline
+document.getElementById("decryptInputs").innerHTML="";
+document.getElementById("encryptOutput").innerHTML="";
