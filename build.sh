@@ -17,6 +17,7 @@ cat frontend/js/*.js > "${JsPayloadConcatenatedFile}"
 cat "${wasmJsPayloadFile}" >> "${JsPayloadConcatenatedFile}"
 
 echo "[3] Pack css & javascript into a single HTML file"
+cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" frontend/js/wasm_exec.js
 mkdir -p build
 htmlTemplate="frontend/index.template.html"
 CSSPayloadFile="frontend/css/style.css"
