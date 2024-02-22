@@ -37,7 +37,7 @@ func recoverShares(this js.Value, i []js.Value) interface{} {
 	for k := 0; k < i[0].Length(); k++ {
 		inStrings[k] = strings.TrimSpace(i[0].Index(k).String())
 		if len(inStrings[k]) == 0 {
-			return js.Error{js.ValueOf(fmt.Sprintf("Please provide all shares. Share '%d' is empty", k))}
+			return js.Error{js.ValueOf(fmt.Sprintf("Please provide all shares. Share '%d' is empty", (k+1)))}
 		}
 	}
 
