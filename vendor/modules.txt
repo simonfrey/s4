@@ -1,4 +1,4 @@
-# github.com/hashicorp/vault v1.13.12
+# github.com/hashicorp/vault v1.14.10
 ## explicit
 github.com/hashicorp/vault/shamir
 # github.com/pkg/errors v0.9.1
