@@ -161,6 +161,9 @@ textarea {
     font-family: monospace;
 }
 
+footer{
+    text-align: right;
+}
 a {
     color: var(--blue);
     cursor: pointer;
