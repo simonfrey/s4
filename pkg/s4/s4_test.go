@@ -21,8 +21,6 @@ func randNK() (n uint64, k uint64) {
 	return uint64(nI), uint64(kI)
 }
 
-//
-//
 // Normal
 func TestSecretSharingEqual(t *testing.T) {
 	input := make([]byte, rand.Intn(30000-1000)+1000)
@@ -131,8 +129,6 @@ func TestSecretSharingInEqual(t *testing.T) {
 
 }
 
-//
-//
 // AES
 func TestSecretSharingEqualAES(t *testing.T) {
 	input := make([]byte, rand.Intn(30000-1000)+1000)

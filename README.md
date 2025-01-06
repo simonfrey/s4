@@ -6,7 +6,7 @@ Please note that s4 is provided as it is and I do not take responsibility for an
 
 ## 📚 Usage as library
 
-You can use s4 as normal go library in your go projects by importing it via `import "github.com/simonfrey/s4"` and en-/decrypt
+You can use s4 as normal go library in your go projects by importing it via `import "github.com/simonfrey/s4/pkg/s4"` and en-/decrypt
 bytes to byte shares and vice versa
 
 ## 🏠 Building the WASM for the frontend
