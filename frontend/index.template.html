@@ -52,9 +52,15 @@
                 <label for="encryptShares">Shares:</label>
                 <input autocomplete="off" value="3" min="2" type="number" id="encryptShares" placeholder="Shares"/>
             </div>
-            <div>
-                <input autocomplete="off" type="checkbox" id="encryptUseAES"/>
-                <label for="encryptUseAES">Use AES(256 bit) for data and distribute key</label>
+            <div title="Use AES(256 bit) for data and distribute key" class="checkboxButton">
+                Use AES(256 bit):<br>
+                <label for="encryptUseAES">Improved Security
+                <input autocomplete="off" checked type="checkbox" id="encryptUseAES"/></label>
+            </div>
+            <div title="Use base24 to optimize for handwritten shares" class="checkboxButton">
+                Use base24:<br>
+                <label for="encryptUseBase24">Optimize for Handwriting
+                <input autocomplete="off" checked type="checkbox" id="encryptUseBase24"/></label>
             </div>
         </div>
         <textarea autocomplete="off" id="encryptInput" placeholder="Whatever message / binary data you want."></textarea>
