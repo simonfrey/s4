@@ -1,6 +1,11 @@
-# github.com/hashicorp/vault v1.14.10
-## explicit
+# github.com/hashicorp/vault v1.18.3
+## explicit; go 1.23.3
 github.com/hashicorp/vault/shamir
+# github.com/onsi/gomega v1.33.1
+## explicit; go 1.20
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
+# gitlab.com/phil9909/base24 v0.1.1
+## explicit; go 1.14
+gitlab.com/phil9909/base24
