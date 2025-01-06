@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const result = await WebAssembly.instantiateStreaming(fetch(wasmPayloadInlineURL), go.importObject)
         go.run(result.instance)
         // Load Encrypt
-        document.querySelectorAll("#encryptThreshold, #encryptShares, #encryptUseAES, #encryptInput").forEach((input) => {
+        document.querySelectorAll("#encryptThreshold, #encryptShares, #encryptUseAES, #encryptInput, #encryptUseBase24").forEach((input) => {
             input.addEventListener("input", doEncrypt)
         })
         // Load Decrypt
