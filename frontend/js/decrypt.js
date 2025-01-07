@@ -1,3 +1,12 @@
+/**
+ * ASCII to Unicode (decode Base64 to original data)
+ * @param {string} b64
+ * @return {string}
+ */
+function atou(b64) {
+    return decodeURIComponent(escape(atob(b64)));
+}
+
 function handleDecryptShareChange() {
 
     const inputsEl = document.getElementById("decryptInputs")
@@ -48,7 +57,7 @@ function doDecrypt() {
         outEl.innerText = ""
         setError(res)
     } else {
-        outEl.innerText = atob(res)
+        outEl.innerText = atou(res)
         setError("")
     }
 }

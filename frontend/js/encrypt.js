@@ -1,3 +1,12 @@
+/**
+ * Unicode to ASCII (encode data to Base64)
+ * @param {string} data
+ * @return {string}
+ */
+function utoa(data) {
+    return btoa(unescape(encodeURIComponent(data)));
+}
+
 function fillEncryptOutputs(values) {
     const output = document.getElementById("encryptOutput")
     output.innerHTML = ""
@@ -43,7 +52,7 @@ function doEncrypt() {
     const encoded = new TextEncoder().encode('€')
     // Do it!
     const res = Distribute_fours(
-        btoa(input),
+        utoa(input),
         shares,
         threshold,
         useAES,
