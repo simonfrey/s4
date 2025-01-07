@@ -6,15 +6,12 @@ import (
 	"strconv"
 )
 
-const DEFAULT_VERSION float32 = 0.5
-
-const version string = "0.5"
-const AES_S4 string = "AES+S4"
-const S4 string = "S4"
+const AES_S4 string = "aes+s4"
+const S4 string = "s4"
 
 var spaceRegex = regexp.MustCompile(`\s+|={3,}`)
 
-var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[s4v(\d+\.\d+)\|*(AES\+S4|S4)\]?(.*?)(?:(?:END|\[).*?)?\]`)
+var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[s4v(\d+\.\d+)\|*(aes\+s4|s4)\]?(.*?)(?:(?:END|\[).*?)?\]`)
 
 // IsTravelValidFormat checks if the provided format is valid based on rules.
 func IsTravelValidFormat(travelFormat string) bool {
