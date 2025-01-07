@@ -24,7 +24,7 @@ should run s4 as intended.
 ### Building the frontend in Docker (in case you don't have a [go](https://golang.org/) build environment setup in your machine.)
 
 ```
-docker run --rm -v .:/app docker.io/golang:1.14 env --chdir=/app -S ./build.sh
+docker run --rm -v .:/app docker.io/golang:1.23.3 env --chdir=/app -S ./build.sh
 ```
 
 `docker` can also be replaced with `podman` in the above command, if you prefer to use it.
