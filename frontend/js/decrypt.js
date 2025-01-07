@@ -54,10 +54,10 @@ function doDecrypt() {
     const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/
 
     if (!base64regex.test(res)) {
-        outEl.innerText = ""
+        outEl.value = ""
         setError(res)
     } else {
-        outEl.innerText = atou(res)
+        outEl.value = atou(res)
         setError("")
     }
 }
