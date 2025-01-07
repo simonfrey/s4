@@ -2,6 +2,7 @@ package s4
 
 import (
 	"bytes"
+	"encoding/base64"
 	"math/rand"
 	"testing"
 	"time"
@@ -49,6 +50,41 @@ func TestSecretSharingEqual(t *testing.T) {
 		t.Fatal("Input and output bytes differ")
 	}
 
+}
+
+func TestNewLineSecret(t *testing.T) {
+	input := []byte("Hello\nWorld\n With Space")
+
+	n := uint64(5)
+	k := uint64(2)
+
+	shares, err := DistributeBytes(input, n, k)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	base64Shares := make([]string, len(shares))
+	for i, share := range shares {
+		base64Shares[i] = base64.StdEncoding.EncodeToString(share)
+	}
+
+	recoveryShares := make([][]byte, len(base64Shares))
+	for i, share := range base64Shares {
+		decodedShare, err := base64.StdEncoding.DecodeString(share)
+		if err != nil {
+			t.Fatal(err)
+		}
+		recoveryShares[i] = decodedShare
+	}
+
+	nBytes, err := RecoverBytes(recoveryShares[:k])
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !bytes.Equal(input, nBytes) {
+		t.Fatalf("Input and output bytes differ. In:\n%q\nOut:\n%q", input, nBytes)
+	}
 }
 
 func TestSecretSharingSameShares(t *testing.T) {
