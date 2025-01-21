@@ -74,6 +74,13 @@ func TestOldFormat(t *testing.T) {
 			ValidFormat:  true,
 		},
 		{
+			TravelFormat: "s4 v0.5 || S4\nHk0kxzGjgswt3IWI2j1flybl",
+			UsesAES:      false,
+			Version:      0.5,
+			Data:         "Hk0kxzGjgswt3IWI2j1flybl",
+			ValidFormat:  true,
+		},
+		{
 			TravelFormat: "[s4 v0.5 S4 hUjjRUlRlA==]",
 			UsesAES:      false,
 			Version:      0.5,
