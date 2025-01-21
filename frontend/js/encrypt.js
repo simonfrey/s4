@@ -42,19 +42,21 @@ function doEncrypt() {
     const threshold = thresholdEl.valueAsNumber
     const shares = sharesEl.valueAsNumber
     const useAES = document.getElementById("encryptUseAES").checked
+    const useBase24 = document.getElementById("encryptUseBase24").checked
     const input = document.getElementById("encryptInput").value
 
     // Handle no input
     if (input === "") {
         return fillEncryptOutputs(Array(shares).fill(""))
     }
-
+    const encoded = new TextEncoder().encode('€')
     // Do it!
     const res = Distribute_fours(
         utoa(input),
         shares,
         threshold,
-        useAES
+        useAES,
+        useBase24,
     )
 
     // Update DOM with results

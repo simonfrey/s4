@@ -127,19 +127,27 @@ section > * {
     flex-direction: column;
 }
 
-#encrypt > div > div:nth-child(3) {
-    flex-direction: row;
-    align-items: center;
+
+label:has(input[type=checkbox]) {
+    height: 2.5em;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ff000020;
 }
 
-input, textarea {
+label:has(input[type=checkbox]:checked) {
+    background-color: lightgreen;
+}
+
+input, textarea, input[type=checkbox]+label {
     border: 1px solid var(--light-grey);
     border-radius: 4px;
     color: var(--dark-grey);
     font-size: 1rem;
 }
 
-input {
+input[type=number] {
     height: 2.5em;
     padding: 0 .75em;
 }
@@ -150,8 +158,12 @@ textarea {
     max-height: 40em;
     padding: .75em;
     resize: vertical;
+    font-family: monospace;
 }
 
+footer{
+    text-align: right;
+}
 a {
     color: var(--blue);
     cursor: pointer;

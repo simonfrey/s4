@@ -2,7 +2,6 @@
 
 set -eu
 
-mkdir build || true
 
 echo "[1] Build wasm"
 wasmPayloadFile=$(mktemp)
@@ -23,10 +22,13 @@ cat frontend/js/*.js > "${JsPayloadConcatenatedFile}"
 cat "${wasmJsPayloadFile}" >> "${JsPayloadConcatenatedFile}"
 
 echo "[3] Pack css & javascript into a single HTML file"
+rm -r build || true
 mkdir -p build
 htmlTemplate="frontend/index.template.html"
+outPath="build/index.html"
 CSSPayloadFile="frontend/css/style.css"
-sed -i -e "/INLINE_WASM_PLACEHOLDER/r $JsPayloadConcatenatedFile" -e "/INLINE_WASM_PLACEHOLDER/d" "${htmlTemplate}"
-sed -e "/INLINE_STYLE_PLACEHOLDER/r $CSSPayloadFile" -e "/INLINE_STYLE_PLACEHOLDER/d" "${htmlTemplate}" > build/index.html
+cp $htmlTemplate $outPath
+sed -i -e "/INLINE_WASM_PLACEHOLDER/r $JsPayloadConcatenatedFile" -e "/INLINE_WASM_PLACEHOLDER/d" "${outPath}"
+sed -i -e "/INLINE_STYLE_PLACEHOLDER/r $CSSPayloadFile" -e "/INLINE_STYLE_PLACEHOLDER/d" "${outPath}"
 
 echo "[4] Done. You can upload the build folder to your server or use it locally"
