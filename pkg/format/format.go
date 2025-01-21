@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 const AES_S4 string = "aes+s4"
@@ -11,12 +12,24 @@ const S4 string = "s4"
 
 var spaceRegex = regexp.MustCompile(`\s+|={3,}`)
 
-var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[?s4v(\d+\.\d+)\|*(aes\+s4|s4)\]?(.*?)(?:(?:END|\[).*?)?\]?`)
+var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[s4v(\d+\.\d+)\|*(aes\+s4|s4)\]?(.*?)(?:(?:END|\[).*?)?\]`)
+
+func cleanUpTravelFormat(travelFormat string) string {
+	cleanFormat := spaceRegex.ReplaceAllString(travelFormat, "")
+	if strings.HasPrefix(cleanFormat, "s4") {
+		if !strings.HasSuffix(cleanFormat, "]") {
+			cleanFormat = fmt.Sprintf("%s]", cleanFormat)
+		}
+		if !strings.HasPrefix(cleanFormat, "[") {
+			cleanFormat = fmt.Sprintf("[%s", cleanFormat)
+		}
+	}
+	return cleanFormat
+}
 
 // IsTravelValidFormat checks if the provided format is valid based on rules.
 func IsTravelValidFormat(travelFormat string) bool {
-	noSpaces := spaceRegex.ReplaceAllString(travelFormat, "")
-	return travelFormatRegex.MatchString(noSpaces)
+	return travelFormatRegex.MatchString(cleanUpTravelFormat(travelFormat))
 }
 
 type Format struct {
@@ -56,8 +69,7 @@ func CreateTravelFormat(f Format) string {
 }
 
 func ParseTravelFormat(travelFormat string) (format *Format, err error) {
-	noSpaces := spaceRegex.ReplaceAllString(travelFormat, "")
-
+	noSpaces := cleanUpTravelFormat(travelFormat)
 	// Parse via travelFormatRegex
 	res := travelFormatRegex.FindStringSubmatch(noSpaces)
 	if len(res) != 4 {
@@ -71,7 +83,7 @@ func ParseTravelFormat(travelFormat string) (format *Format, err error) {
 	}
 
 	return &Format{
-		UseAES:  res[2] == AES_S4,
+		UseAES:  strings.ToLower(res[2]) == AES_S4,
 		Version: float32(versionFloat),
 		Data:    res[3],
 	}, nil
