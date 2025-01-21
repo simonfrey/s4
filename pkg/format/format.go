@@ -11,7 +11,7 @@ const S4 string = "s4"
 
 var spaceRegex = regexp.MustCompile(`\s+|={3,}`)
 
-var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[s4v(\d+\.\d+)\|*(aes\+s4|s4)\]?(.*?)(?:(?:END|\[).*?)?\]`)
+var travelFormatRegex = regexp.MustCompile(`(?msi)(?:BEGIN)?\[?s4v(\d+\.\d+)\|*(aes\+s4|s4)\]?(.*?)(?:(?:END|\[).*?)?\]?`)
 
 // IsTravelValidFormat checks if the provided format is valid based on rules.
 func IsTravelValidFormat(travelFormat string) bool {
