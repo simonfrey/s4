@@ -118,6 +118,40 @@ section > * {
     width: 100%;
 }
 
+#encryptOutput {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1em;
+}
+
+.share {
+    border: 1px solid var(--light-grey);
+    border-radius: 6px;
+    padding: .75em;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .75em;
+    align-items: start;
+}
+
+.share textarea {
+    width: 100%;
+    min-height: 6em;
+    margin: 0;
+}
+
+.share-qr {
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#encryptOutput .share:only-child {
+    grid-template-columns: 1fr auto;
+}
+
 #encrypt > div > *, #decrypt > div > * {
     flex-grow: 1;
 }

@@ -8,4 +8,11 @@ require (
 	gitlab.com/phil9909/base24 v0.1.1
 )
 
-require github.com/onsi/gomega v1.33.1 // indirect
+require (
+	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
+	github.com/gavincarr/go-slip39 v0.1.3 // indirect
+	github.com/onsi/gomega v1.33.1 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/exp v0.0.0-20240707233637-46b078467d37 // indirect
+	gonum.org/v1/gonum v0.15.0 // indirect
+)

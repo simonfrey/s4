@@ -9,6 +9,12 @@ Please note that s4 is provided as it is and I do not take responsibility for an
 You can use s4 as normal go library in your go projects by importing it via `import "github.com/simonfrey/s4/pkg/s4"` and en-/decrypt
 bytes to byte shares and vice versa
 
+## 🔀 SLIP-39 + Trezor-friendly helpers
+
+- Convert s4 shares to SLIP-39 mnemonics (Trezor-compatible): `echo "<share>" | go run ./cmd/slip39helper -mode export`
+- Convert SLIP-39 mnemonics back to s4 shares: `echo "<mnemonic>" | go run ./cmd/slip39helper -mode import`
+- Each share is wrapped as a 1-of-1 SLIP-39 mnemonic so you can move it via QR or Trezor Suite; provide multiple lines on stdin for batch conversion.
+
 ## 🏠 Building the WASM for the frontend
 
 I assume you have a [go](https://golang.org/) build environment setup in your machine. 

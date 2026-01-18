@@ -12,10 +12,31 @@ function fillEncryptOutputs(values) {
     output.innerHTML = ""
 
     values.forEach((value) => {
+        const share = document.createElement("div")
+        share.className = "share"
+
         const textarea = document.createElement("textarea")
         textarea.readOnly = true
         textarea.innerHTML = value
-        output.appendChild(textarea)
+        share.appendChild(textarea)
+
+        if (value) {
+            const qrContainer = document.createElement("div")
+            qrContainer.className = "share-qr"
+            try {
+                new QRCode(qrContainer, {
+                    text: value,
+                    width: 160,
+                    height: 160,
+                    correctLevel: QRCode.CorrectLevel.M,
+                })
+            } catch (e) {
+                // text like fallback
+            }
+            share.appendChild(qrContainer)
+        }
+
+        output.appendChild(share)
     })
 }
 
